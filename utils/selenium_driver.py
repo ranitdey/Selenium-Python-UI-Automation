@@ -2,7 +2,7 @@ import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.common.exceptions import WebDriverException
+from selenium.common.exceptions import WebDriverException, TimeoutException
 from ptest.plogger import preporter
 from utils import driver_utils
 
@@ -26,6 +26,12 @@ class SeleniumDriver:
     def open_url(self, url):
         self._driver.get(url)
 
+    def get_url(self):
+        # Given the sleep because the current_url reference is not getting updated instantly
+        # @TODO need to think of a better way to handle it
+        time.sleep(1)
+        return self._driver.current_url
+
     def switch_window(self):
         self._driver.switch_to.window(self._driver.window_handles[len(self.get_window_handlers())-1])
 
@@ -46,6 +52,14 @@ class SeleniumDriver:
         )
         return element
 
+    def find_visible_elements(self, locator, wait_until=None):
+        preporter.info("Finding visible elements: " + (str(locator)))
+        wait_until = self._explicit_wait_time if wait_until is None else wait_until
+        elements = WebDriverWait(self._driver, wait_until).until(
+            EC.visibility_of_all_elements_located(locator)
+        )
+        return elements
+
     def wait_for_element_to_disappear(self, locator, wait_until=None):
         preporter.info("Waiting for invisibility of element: " + str(locator))
         wait_until = self._explicit_wait_time if wait_until is None else wait_until
@@ -63,6 +77,15 @@ class SeleniumDriver:
         return element
 
     def click(self, locator, wait_until=None):
+
+        """
+            This click method will click on the element after the element is visible and available for click,
+            in the case when execution is really fast and the click has failed it will wait for two seconds and
+            try to click it again. Most of the times the first click will work. In rare scenarios the second
+            click will come into the picture when the explicit wait is very less .
+
+        """
+
         preporter.info("Clicking element: " + (str(locator)))
         wait_until = self._explicit_wait_time if wait_until is None else wait_until
         self.find_visible_element(locator, wait_until)  # Ignoring the returned element

@@ -4,6 +4,7 @@ from .base_page import Page
 
 
 class CommunityPage(Page):
+
     _search = (By.XPATH, "//*[@id='search-button']")
     _search_text = (By.XPATH, "//*[@id='search-term']")
     _first_search_item = (By.XPATH, "//*[@id='ember6']/header/div/div/div[2]/div/div/div/div/div[3]/div/div/ul/li[1]")
