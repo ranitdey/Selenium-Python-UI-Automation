@@ -1,4 +1,3 @@
-from config import base_ui_url
 
 available_countries = ['دولة الإمارات العربية المتحدة', 'Österreich', 'Australia', 'België', 'България', 'Bonaire',
                        'Brasil', 'Canada', 'Κύπρος', 'Česká republika', 'Deutschland', 'Danmark', 'Eesti', 'España',

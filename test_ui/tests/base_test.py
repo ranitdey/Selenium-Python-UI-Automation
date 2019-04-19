@@ -12,11 +12,11 @@ class BaseTest:
         self._driver = SeleniumDriver()
         self.initialize_pages(self._driver)
 
-    # @AfterClass()
-    # def tear_down(self):
-    #     preporter.info("Closing driver")
-    #     self._driver.get_driver().close()
-    #     self._driver.get_driver().quit()
+    @AfterClass()
+    def tear_down(self):
+        preporter.info("Closing driver")
+        self._driver.get_driver().close()
+        self._driver.get_driver().quit()
 
     def initialize_pages(self, driver):
         from ..pages.home_page import HomePage
