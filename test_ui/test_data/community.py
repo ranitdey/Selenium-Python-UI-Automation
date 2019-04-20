@@ -1,0 +1,17 @@
+announcements = ["About the Announcements category", "Revolut lands in the USA!",
+                 "Unique GBP Sort Code and Account Numbers.",
+                 "1.5M users #ToTheMoon", "Introducing Auto-Exchange",
+                 "Introducing Price Alerts", "We got a banking licence",
+                 "Harder, BETA, Faster, Stronger: Help us build a radically better Revolut App!",
+                 "Round up your spare change and save with Vaults", "Auto Top-Up out now!",
+                 "Introducing #XRP", "European Banking Licence", "Introducing Euro Direct Debits",
+                 "Introducing Rev Me!", "Revolut – Europe’s new tech unicorn", "CRYPTO for everyone!",
+                 "Revolut cards are back in Switzerland", "Help us name this awesome feature",
+                 "Announcing 24/7 customer support for everyone", "Fair Usage Policy Update",
+                 "New Feature: Request Money", "Revolut University Race!",
+                 "Announcing our $66m Series B investment", "IMPORTANT: Service disruption",
+                 "IMPORTANT: Service disruption on 04/02/2017", "Revolut Bot",
+                 "New release: Android 3.2.2", "Welcome to Revolut Community Page!",
+                 "IMPORTANT: Service disruption on 15/10/2016",
+                 "Look who’s featured in ‘Apps we Love’ on iTunes @AppStore . Help us out & share the great news!"
+                 ]

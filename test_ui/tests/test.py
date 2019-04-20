@@ -3,28 +3,49 @@ from ptest.decorator import TestClass, Test
 from ptest.plogger import preporter
 import config
 from test_ui.tests.base_test import BaseTest
-from ptest.assertion import assert_equals, assert_list_elements_equal, assert_true
+from ptest.assertion import assert_equals, assert_list_elements_equal, assert_true, fail
 from selenium.common.exceptions import TimeoutException, WebDriverException
 from ..test_data.countries_data import available_countries, countries_to_url_map
+from ..test_data.community import announcements
 
 
 @TestClass(run_mode='singleline', description="Test Case")
 class UITests(BaseTest):
 
-    @Test(description="Check if topics gets populated in search and its title is proper")
-    def tc_001_topic_title_test(self):
-        target_text = "We got a banking licence"
+    @Test(data_provider=announcements, description="Check if a topic gets populated in search and its title is proper")
+    def tc_001_topic_title_test(self, topic):
         preporter.info("Opening URL: " + config.base_ui_url)
         self._driver.open_url(config.base_ui_url)
         self._home_page.navigate_to_help_tab()
         self._home_page.click_to_community_link()
         self._driver.switch_window()
-        self._community_page.search_text(target_text)
+        self._community_page.search_text(topic)
         self._community_page.click_on_first_search_item()
-        assert_equals(self._community_page.get_topic_title(), target_text, "Expected topic not found")
+        try:
+            assert_equals(self._community_page.get_topic_title(), topic, "Expected topic title not proper")
+            self._driver.close_tab()
+        except AssertionError:
+            self._driver.close_tab()
+            fail("Expected topic title not proper")
+
+    @Test(data_provider=announcements, description="Check if a topic is in the top of the search result")
+    def tc_002_topic_search_perfect_match_test(self, announcement):
+        preporter.info("Opening URL: " + config.base_ui_url)
+        self._driver.open_url(config.base_ui_url)
+        self._home_page.navigate_to_help_tab()
+        self._home_page.click_to_community_link()
+        self._driver.switch_window()
+        self._community_page.search_text(announcement)
+        try:
+            assert_equals(self._community_page.get_first_order_search_results_titles()[0], announcement,
+                          "Item is not in top of search results")
+            self._driver.close_tab()
+        except AssertionError:
+            self._driver.close_tab()
+            fail("Item is not in top of search results")
 
     @Test(description="Check all available country flags")
-    def tc_002_available_country_test(self):
+    def tc_003_available_country_test(self):
         preporter.info("Opening URL: " + config.base_ui_url)
         self._driver.open_url(config.base_ui_url)
         try:
@@ -39,7 +60,7 @@ class UITests(BaseTest):
                                        "All country flags did't matched")
 
     @Test(data_provider=available_countries, description="Check all available country flags and its url")
-    def tc_003_available_countries_url_test(self, country):
+    def tc_004_available_countries_url_test(self, country):
         preporter.info("Opening URL: " + config.base_ui_url)
         self._driver.open_url(config.base_ui_url)
         try:
@@ -63,7 +84,7 @@ class UITests(BaseTest):
                           "URL did't match with country code: " + country)
 
     @Test(description="Check if keyboard_shortcuts button is displayed in community page")
-    def tc_004_keyboard_shortcut_test(self):
+    def tc_005_keyboard_shortcut_test(self):
         preporter.info("Opening URL: " + config.base_ui_url)
         self._driver.open_url(config.base_ui_url)
         self._home_page.navigate_to_help_tab()
@@ -71,7 +92,3 @@ class UITests(BaseTest):
         self._driver.switch_window()
         self._community_page.click_on_hamburger_menu()
         assert_true(self._community_page.is_keyboard_shortcuts_displayed(), "Keyboard shortcut button not displayed")
-
-
-
-

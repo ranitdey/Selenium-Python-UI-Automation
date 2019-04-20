@@ -28,12 +28,20 @@ class SeleniumDriver:
 
     def get_url(self):
         # Given the sleep because the current_url reference is not getting updated instantly
-        # @TODO need to think of a better way to handle it
+        # @TODO need to think of a better way to handle it, something which will pole for url change could work
         time.sleep(1)
         return self._driver.current_url
 
     def switch_window(self):
         self._driver.switch_to.window(self._driver.window_handles[len(self.get_window_handlers())-1])
+
+    def close_tab(self):
+
+        """ Close current tab if it is not the last tab and also moves the focus to the last opened window available """
+
+        if len(self.get_window_handlers()) > 1:
+            self._driver.close()
+            self.switch_window()
 
     def get_window_handlers(self):
         return self._driver.window_handles
@@ -114,4 +122,5 @@ class SeleniumDriver:
         self._driver.execute_script("return arguments[0].scrollIntoView();", element)
         hover_action = ActionChains(self.get_driver()).move_to_element(element)
         hover_action.perform()
+
 
