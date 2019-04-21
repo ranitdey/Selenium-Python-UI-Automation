@@ -1,5 +1,5 @@
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException
 from .base_page import Page
 
 
@@ -42,8 +42,32 @@ class CommunityPage(Page):
         return self._driver.find_visible_element(self._topic_title).text
 
     def get_first_order_search_results_titles(self):
-        self.search_results_elements = self._driver.find_visible_elements(self._search_results_titles_first_order)
-        self.search_results = []
-        for result in self.search_results_elements:
-            self.search_results.append(result.text)
-        return self.search_results
+        """
+        This method checks for first order search results and extracts title of results. It returns a
+        list of titles by maintaining the actual order.
+        """
+        search_results_elements = self._driver.find_visible_elements(self._search_results_titles_first_order)
+        search_results = []
+        for result in search_results_elements:
+            search_results.append(result.text)
+        return search_results
+
+    def search_in_first_order_search_results(self, target_text):
+        """
+        This method checks if a title is present in the search result or not and returns the WebElement
+        if its present.
+        :param target_text: Title that needs to be matched .
+        :return If title is present it returns a WebElement otherwise it raises NoSuchElement Exception.
+        """
+        search_results = self._driver.find_visible_elements(self._search_results_titles_first_order)
+        for result in search_results:
+            if target_text == result.text:
+                return result
+        raise NoSuchElementException
+
+    def find_and_click_topic_from_search_results(self, topic_title):
+        topic_element = self.search_in_first_order_search_results(topic_title)
+        self._driver.click_element(topic_element)
+
+
+

@@ -36,9 +36,9 @@ class SeleniumDriver:
         self._driver.switch_to.window(self._driver.window_handles[len(self.get_window_handlers())-1])
 
     def close_tab(self):
-
-        """ Close current tab if it is not the last tab and also moves the focus to the last opened window available """
-
+        """
+        Close current tab if its not the last tab and also moves the focus to the last opened window available
+        """
         if len(self.get_window_handlers()) > 1:
             self._driver.close()
             self.switch_window()
@@ -85,25 +85,25 @@ class SeleniumDriver:
         return element
 
     def click(self, locator, wait_until=None):
-
         """
             This click method will click on the element after the element is visible and available for click,
             in the case when execution is really fast and the click has failed it will wait for two seconds and
             try to click it again. Most of the times the first click will work. In rare scenarios the second
             click will come into the picture when the explicit wait is very less .
-
         """
-
         preporter.info("Clicking element: " + (str(locator)))
         wait_until = self._explicit_wait_time if wait_until is None else wait_until
         self.find_visible_element(locator, wait_until)  # Ignoring the returned element
         element = self.find_clickable_element(locator, wait_until)
+        self.click_element(element)
+
+    def click_element(self, element):
         self._driver.execute_script("return arguments[0].scrollIntoView();", element)
         try:
             element.click()
         except WebDriverException as wde:
             if "Other element would" in wde.msg or "not attached" in wde.msg:
-                time.sleep(2)   # Wait two seconds before trying again.
+                time.sleep(2)  # Wait two seconds before trying again.
                 element.click()
 
     def send_keys(self, locator, text, wait_until=None):

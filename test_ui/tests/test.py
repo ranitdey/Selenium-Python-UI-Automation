@@ -20,7 +20,7 @@ class UITests(BaseTest):
         self._home_page.click_to_community_link()
         self._driver.switch_window()
         self._community_page.search_text(topic)
-        self._community_page.click_on_first_search_item()
+        self._community_page.find_and_click_topic_from_search_results(topic)
         try:
             assert_equals(self._community_page.get_topic_title(), topic, "Expected topic title not proper")
             self._driver.close_tab()

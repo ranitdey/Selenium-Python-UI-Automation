@@ -40,11 +40,11 @@ class HomePage(Page):
         return self._driver.click(self._current_selected_country).text
 
     def get_all_countries_name(self):
-        self.countries = self._driver.find_visible_elements(self._all_countries_flag)
-        self.country_names = []
-        for i in self.countries:
-            self.country_names.append(i.text)
-        return self.country_names
+        countries = self._driver.find_visible_elements(self._all_countries_flag)
+        country_names = []
+        for i in countries:
+            country_names.append(i.text)
+        return country_names
 
     def search_in_available_countries(self,text):
         self._driver.send_keys(self._search_countries_available, text)
