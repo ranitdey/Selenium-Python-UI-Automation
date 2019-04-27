@@ -64,7 +64,7 @@ class CommunityPage(Page):
         This method checks if a title is present in the search result or not and returns the WebElement
         if its present.
         :param target_text: Title that needs to be matched .
-        :return If title is present it returns a WebElement otherwise it raises NoSuchElement Exception.
+        :return If title is present it returns a WebElement otherwise it raises UIException Exception.
         """
         search_results = self.get_search_result_elements()
         for result in search_results:
