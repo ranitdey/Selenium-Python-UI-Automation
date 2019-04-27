@@ -1,4 +1,3 @@
-
 from ptest.decorator import TestClass, Test
 from ptest.plogger import preporter
 import config
@@ -14,11 +13,12 @@ class UITests(BaseTest):
 
     @Test(data_provider=announcements, description="Check if a topic gets populated in search and its title is proper")
     def tc_001_topic_title_test(self, topic):
-        preporter.info("Opening URL: " + config.base_ui_url)
-        self._driver.open_url(config.base_ui_url)
+        preporter.info("Opening URL: " + config.BASE_URL)
+        self._driver.open_url(config.BASE_URL)
         self._home_page.navigate_to_help_tab()
         self._home_page.click_to_community_link()
         self._driver.switch_window()
+        preporter.info("Searching for " + topic)
         self._community_page.search_text(topic)
         self._community_page.find_and_click_topic_from_search_results(topic)
         try:
@@ -30,11 +30,12 @@ class UITests(BaseTest):
 
     @Test(data_provider=announcements, description="Check if a topic is in the top of the search result")
     def tc_002_topic_search_perfect_match_test(self, announcement):
-        preporter.info("Opening URL: " + config.base_ui_url)
-        self._driver.open_url(config.base_ui_url)
+        preporter.info("Opening URL: " + config.BASE_URL)
+        self._driver.open_url(config.BASE_URL)
         self._home_page.navigate_to_help_tab()
         self._home_page.click_to_community_link()
         self._driver.switch_window()
+        preporter.info("Searching for " + announcement)
         self._community_page.search_text(announcement)
         try:
             assert_equals(self._community_page.get_first_order_search_results_titles()[0], announcement,
@@ -45,15 +46,15 @@ class UITests(BaseTest):
             fail("Item is not in top of search results")
 
     @Test(description="Check all available country flags")
-    def tc_003_available_country_test(self):
-        preporter.info("Opening URL: " + config.base_ui_url)
-        self._driver.open_url(config.base_ui_url)
+    def tc_003_available_countries_test(self):
+        preporter.info("Opening URL: " + config.BASE_URL)
+        self._driver.open_url(config.BASE_URL)
         try:
             self._home_page.click_on_current_selected_country()
             assert_list_elements_equal(self._home_page.get_all_countries_name(), available_countries,
                                        "All country flags did't matched")
         except (TimeoutException, WebDriverException):
-            self._home_page.click_on_hiring_banner()              # TODO Find a better method to handle the banner
+            self._home_page.click_on_hiring_banner()  # TODO Find a better method to handle the banner
             self._home_page.click_on_homepage()
             self._home_page.click_on_current_selected_country()
             assert_list_elements_equal(self._home_page.get_all_countries_name(), available_countries,
@@ -61,8 +62,8 @@ class UITests(BaseTest):
 
     @Test(data_provider=available_countries, description="Check all available country flags and its url")
     def tc_004_available_countries_url_test(self, country):
-        preporter.info("Opening URL: " + config.base_ui_url)
-        self._driver.open_url(config.base_ui_url)
+        preporter.info("Opening URL: " + config.BASE_URL)
+        self._driver.open_url(config.BASE_URL)
         try:
             self._home_page.click_on_current_selected_country()
             self._home_page.search_in_available_countries(country)
@@ -73,7 +74,7 @@ class UITests(BaseTest):
                           "URL did't match with country code: " + country)
         except (TimeoutException, WebDriverException):
 
-            self._home_page.click_on_hiring_banner()              # TODO Find a better method to handle the banner
+            self._home_page.click_on_hiring_banner()  # TODO Find a better method to handle the banner
             self._home_page.click_on_homepage()
             self._home_page.click_on_current_selected_country()
             self._home_page.search_in_available_countries(country)
@@ -85,8 +86,8 @@ class UITests(BaseTest):
 
     @Test(description="Check if keyboard_shortcuts button is displayed in community page")
     def tc_005_keyboard_shortcut_test(self):
-        preporter.info("Opening URL: " + config.base_ui_url)
-        self._driver.open_url(config.base_ui_url)
+        preporter.info("Opening URL: " + config.BASE_URL)
+        self._driver.open_url(config.BASE_URL)
         self._home_page.navigate_to_help_tab()
         self._home_page.click_to_community_link()
         self._driver.switch_window()

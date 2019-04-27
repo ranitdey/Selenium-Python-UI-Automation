@@ -1,1 +1,1 @@
-base_ui_url = "https://revolut.com"
+BASE_URL = "https://revolut.com"
