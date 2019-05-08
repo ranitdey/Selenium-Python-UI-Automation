@@ -4,15 +4,16 @@ UI automation framework made with python , selenium and PTest.
 
 ## How to run on local:
 1. Make sure your system has python 3.0 or > 3.0
-2. Clone this project and go to the project directory
-3. Create a virtual environment and activate the virtual environment
-4. Install the required packages  
+2. Make sure your system has Chrome browser (This framework supports Firefox and  Edge as well.The default browser is Chrome)
+3. Clone this project and go to the project directory
+4. Create a virtual environment and activate the virtual environment
+5. Install the required packages  
 ```
 pip install -r requirements.txt 
 ```
 
-5. Go to the project directory where test_ui folder is present.
-6. Run the tests from terminal
+6. Go to the project directory where test_ui folder is present.
+7. Run the tests from terminal
 ```
 ptest3 -t test_ui.tests.test.UITests    
 ```
